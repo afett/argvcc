@@ -1,1 +1,1 @@
-WIP don't use
+A class for handling unix exec(3) argument lists in C++ code
