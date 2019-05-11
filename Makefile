@@ -15,8 +15,8 @@ PREFIX ?= /usr/local
 
 DEPS = cppunit
 
-CXXFLAGS += $(shell pkg-config --cflags $(DEPS)) -fsanitize=leak -fsanitize=address -fno-omit-frame-pointer
-LIBS = -fsanitize=leak -fsanitize=address -Wl,--as-needed $(shell pkg-config --libs $(DEPS))
+CXXFLAGS += $(shell pkg-config --cflags $(DEPS))
+LIBS = -Wl,--as-needed $(shell pkg-config --libs $(DEPS))
 
 TARGET = libargvcc.so
 PKGCONFIG = argvcc.pc
