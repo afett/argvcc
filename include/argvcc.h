@@ -39,6 +39,7 @@ namespace argvcc {
 
 class Argv {
 public:
+	using iterator = std::vector<char *>::iterator;
 	using const_iterator = std::vector<char *>::const_iterator;
 
 	Argv();
@@ -71,8 +72,12 @@ public:
 	operator char* const*() const noexcept;
 
 	// The terminating nullptr is located at end().next().
+	iterator begin() noexcept;
+	iterator end() noexcept;
 	const_iterator begin() const noexcept;
 	const_iterator end() const noexcept;
+	const_iterator cbegin() const noexcept;
+	const_iterator cend() const noexcept;
 
 private:
 	std::vector<char *> argv_;
