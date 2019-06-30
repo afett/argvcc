@@ -34,6 +34,39 @@ void argv_init(Src const& src, Dst & dst, FN fn)
 	}
 }
 
+class wrap_argv {
+public:
+	wrap_argv(int argc, char *argv[])
+	:
+		begin_(nullptr),
+		end_(nullptr)
+	{
+		if (argc == 0 || argv == nullptr) {
+			throw std::bad_alloc();
+		}
+
+		begin_ = &argv[0];
+		end_ = std::next(begin_, argc);
+		if (*end_ != nullptr) {
+			throw std::bad_alloc();
+		}
+	}
+
+	char **begin() const
+	{
+		return begin_;
+	}
+
+	char **end() const
+	{
+		return end_;
+	}
+
+private:
+	char **begin_;
+	char **end_;
+};
+
 }
 
 namespace argvcc {
@@ -90,6 +123,19 @@ Argv::Argv(std::initializer_list<std::string> l)
 {
 	::argv_init(l, argv_, [](std::string const& s) {
 		return ::safe_strdup(s.c_str());
+	});
+}
+
+Argv::Argv(int argc, char *argv[])
+:
+	argv_(argc + 1)
+{
+	auto wrap = wrap_argv(argc, argv);
+	::argv_init(wrap, argv_, [](const char *s) {
+		if (s == nullptr) {
+			throw std::bad_alloc();
+		}
+		return ::safe_strdup(s);
 	});
 }
 

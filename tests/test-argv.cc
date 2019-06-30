@@ -22,6 +22,7 @@ private:
 	void test_iterators();
 	void test_stdostream();
 	void test_append();
+	void test_argv();
 
 	CPPUNIT_TEST_SUITE(test);
 	CPPUNIT_TEST(test_empty);
@@ -33,6 +34,7 @@ private:
 	CPPUNIT_TEST(test_iterators);
 	CPPUNIT_TEST(test_stdostream);
 	CPPUNIT_TEST(test_append);
+	CPPUNIT_TEST(test_argv);
 	CPPUNIT_TEST_SUITE_END();
 };
 
@@ -298,6 +300,24 @@ void test::test_append()
 	CPPUNIT_ASSERT(a[1] != static_cast<char *>(0));
 	CPPUNIT_ASSERT_EQUAL(std::string("bar"), std::string(a[1]));
 	CPPUNIT_ASSERT_EQUAL(static_cast<char *>(0), a[2]);
+}
+
+void test::test_argv()
+{
+	char foo[] = "foo";
+	char bar[] = "bar";
+	char baz[] = "baz";
+	char *argv[] = {foo, bar, baz, nullptr};
+	auto a = argvcc::Argv(3, argv);
+	CPPUNIT_ASSERT(!a.empty());
+	CPPUNIT_ASSERT_EQUAL(size_t(3), a.size());
+	CPPUNIT_ASSERT(a[0] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), std::string(a[0]));
+	CPPUNIT_ASSERT(a[1] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("bar"), std::string(a[1]));
+	CPPUNIT_ASSERT(a[2] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("baz"), std::string(a[2]));
+	CPPUNIT_ASSERT_EQUAL(static_cast<char *>(0), a[3]);
 }
 
 }}

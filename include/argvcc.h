@@ -51,6 +51,7 @@ public:
 	// Passing nullptr will throw std::bad_alloc().
 	explicit Argv(std::initializer_list<const char *>);
 	explicit Argv(std::initializer_list<std::string>);
+	Argv(int, char *[]);
 
 	~Argv() noexcept;
 
