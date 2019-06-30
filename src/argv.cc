@@ -185,12 +185,12 @@ Argv::operator char* const*() const noexcept
 	return argv_.data();
 }
 
-std::vector<char *>::const_iterator Argv::begin() const noexcept
+auto Argv::begin() const noexcept -> const_iterator
 {
 	return argv_.begin();
 }
 
-std::vector<char *>::const_iterator Argv::end() const noexcept
+auto Argv::end() const noexcept -> const_iterator
 {
 	return argv_.end() - 1;
 }
