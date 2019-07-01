@@ -23,6 +23,8 @@ private:
 	void test_stdostream();
 	void test_append();
 	void test_argv();
+	void test_erase_all();
+	void test_erase();
 
 	CPPUNIT_TEST_SUITE(test);
 	CPPUNIT_TEST(test_empty);
@@ -35,6 +37,8 @@ private:
 	CPPUNIT_TEST(test_stdostream);
 	CPPUNIT_TEST(test_append);
 	CPPUNIT_TEST(test_argv);
+	CPPUNIT_TEST(test_erase_all);
+	CPPUNIT_TEST(test_erase);
 	CPPUNIT_TEST_SUITE_END();
 };
 
@@ -318,6 +322,59 @@ void test::test_argv()
 	CPPUNIT_ASSERT(a[2] != static_cast<char *>(0));
 	CPPUNIT_ASSERT_EQUAL(std::string("baz"), std::string(a[2]));
 	CPPUNIT_ASSERT_EQUAL(static_cast<char *>(0), a[3]);
+}
+
+void test::test_erase_all()
+{
+	auto a = argvcc::Argv{"foo", "bar", "baz"};
+	CPPUNIT_ASSERT(!a.empty());
+	CPPUNIT_ASSERT_EQUAL(size_t(3), a.size());
+	CPPUNIT_ASSERT(a[0] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), std::string(a[0]));
+	CPPUNIT_ASSERT(a[1] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("bar"), std::string(a[1]));
+	CPPUNIT_ASSERT(a[2] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("baz"), std::string(a[2]));
+	CPPUNIT_ASSERT_EQUAL(static_cast<char *>(0), a[3]);
+
+	auto pos = std::begin(a);
+	while (!a.empty()) {
+		pos = a.erase(pos);
+	}
+}
+
+void test::test_erase()
+{
+	auto a = argvcc::Argv{"foo", "bar", "baz"};
+	CPPUNIT_ASSERT(!a.empty());
+	CPPUNIT_ASSERT_EQUAL(size_t(3), a.size());
+	CPPUNIT_ASSERT(a[0] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), std::string(a[0]));
+	CPPUNIT_ASSERT(a[1] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("bar"), std::string(a[1]));
+	CPPUNIT_ASSERT(a[2] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("baz"), std::string(a[2]));
+	CPPUNIT_ASSERT_EQUAL(static_cast<char *>(0), a[3]);
+
+	auto pos = std::begin(a);
+	pos = a.erase(std::next(pos));
+	CPPUNIT_ASSERT(!a.empty());
+	CPPUNIT_ASSERT_EQUAL(size_t(2), a.size());
+	CPPUNIT_ASSERT(a[0] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), std::string(a[0]));
+	CPPUNIT_ASSERT(a[1] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("baz"), std::string(a[1]));
+	CPPUNIT_ASSERT_EQUAL(decltype(pos)::difference_type(1), std::distance(a.begin(), pos));
+	pos = a.erase(std::next(std::begin(a)));
+	CPPUNIT_ASSERT_EQUAL(size_t(1), a.size());
+	CPPUNIT_ASSERT(a[0] != static_cast<char *>(0));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), std::string(a[0]));
+	CPPUNIT_ASSERT_EQUAL(decltype(pos)::difference_type(1), std::distance(a.begin(), pos));
+	CPPUNIT_ASSERT_EQUAL(decltype(pos)::difference_type(0), std::distance(a.end(), pos));
+	pos = a.erase(std::begin(a));
+	CPPUNIT_ASSERT_EQUAL(a.empty(), true);
+	CPPUNIT_ASSERT_EQUAL(decltype(pos)::difference_type(0), std::distance(a.end(), pos));
+	CPPUNIT_ASSERT_EQUAL(decltype(pos)::difference_type(0), std::distance(a.end(), a.begin()));
 }
 
 }}

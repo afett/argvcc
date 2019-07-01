@@ -61,6 +61,7 @@ public:
 	// Passing nullptr will throw std::bad_alloc().
 	void push_back(const char *s);
 	void push_back(std::string const&);
+	iterator erase(const_iterator);
 
 	void append(Argv const&);
 

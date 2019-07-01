@@ -156,6 +156,16 @@ void Argv::push_back(const char *s)
 	*prev(argv_.end(), 2) = tmp.release();
 }
 
+auto Argv::erase(const_iterator pos) -> iterator
+{
+	if (pos < begin() || pos >= end()) {
+		throw std::out_of_range("Argv::erase(const_iterator pos) out of range");
+	}
+
+	::free(*pos);
+	return argv_.erase(pos);
+}
+
 void Argv::append(Argv const& o)
 {
 	auto tmp = Argv(o);
