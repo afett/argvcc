@@ -4,8 +4,8 @@
    license that can be found in the LICENSE file.
 */
 
-#include <stdlib.h>
 #include <algorithm>
+#include <cstdlib>
 #include <cstring>
 #include <memory>
 #include <ostream>
