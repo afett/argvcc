@@ -166,6 +166,20 @@ auto Argv::erase(const_iterator pos) -> iterator
 	return argv_.erase(pos);
 }
 
+auto Argv::erase(const_iterator first, const_iterator last) -> iterator
+{
+	if (first < begin() || first > end()) {
+		throw std::out_of_range("Argv::erase(const_iterator first, const_iterator last) first out of range");
+	}
+
+	if (last < begin() || last > end()) {
+		throw std::out_of_range("Argv::erase(const_iterator first, const_iterator last) last out of range");
+	}
+
+	for_each(first, last, ::free);
+	return argv_.erase(first, last);
+}
+
 void Argv::append(Argv const& o)
 {
 	auto tmp = Argv(o);

@@ -62,6 +62,7 @@ public:
 	void push_back(const char *s);
 	void push_back(std::string const&);
 	iterator erase(const_iterator);
+	iterator erase(const_iterator, const_iterator);
 
 	void append(Argv const&);
 
