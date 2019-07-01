@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <cassert>
 #include <cstdlib>
 #include <cstring>
 #include <memory>
@@ -158,9 +159,8 @@ void Argv::push_back(const char *s)
 
 auto Argv::erase(const_iterator pos) -> iterator
 {
-	if (pos < begin() || pos >= end()) {
-		throw std::out_of_range("Argv::erase(const_iterator pos) out of range");
-	}
+	assert(pos >= begin());
+	assert(pos < end());
 
 	::free(*pos);
 	return argv_.erase(pos);
@@ -168,13 +168,10 @@ auto Argv::erase(const_iterator pos) -> iterator
 
 auto Argv::erase(const_iterator first, const_iterator last) -> iterator
 {
-	if (first < begin() || first > end()) {
-		throw std::out_of_range("Argv::erase(const_iterator first, const_iterator last) first out of range");
-	}
-
-	if (last < begin() || last > end()) {
-		throw std::out_of_range("Argv::erase(const_iterator first, const_iterator last) last out of range");
-	}
+	assert(first >= begin());
+	assert(first <= end());
+	assert(last >= begin());
+	assert(last <= end());
 
 	for_each(first, last, ::free);
 	return argv_.erase(first, last);
