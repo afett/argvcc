@@ -69,10 +69,7 @@ private:
 
 namespace argvcc {
 
-Argv::Argv()
-:
-	argv_(1)
-{}
+Argv::Argv() = default;
 
 Argv::Argv(Argv const& o)
 :

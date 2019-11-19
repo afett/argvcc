@@ -82,7 +82,7 @@ public:
 	const_iterator cend() const noexcept;
 
 private:
-	std::vector<char *> argv_;
+	std::vector<char *> argv_{1};
 };
 
 // An empty argument will yield an empty string.
