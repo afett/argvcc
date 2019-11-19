@@ -1,6 +1,9 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <argvcc.h>
+
+#include <algorithm>
+#include <cstring>
 #include <sstream>
 
 namespace unittests {
@@ -28,6 +31,7 @@ private:
 	void test_erase_range_all();
 	void test_erase_range_one();
 	void test_erase_range_none();
+	void test_algorithm_compat();
 
 	CPPUNIT_TEST_SUITE(test);
 	CPPUNIT_TEST(test_empty);
@@ -45,6 +49,7 @@ private:
 	CPPUNIT_TEST(test_erase_range_all);
 	CPPUNIT_TEST(test_erase_range_one);
 	CPPUNIT_TEST(test_erase_range_none);
+	CPPUNIT_TEST(test_algorithm_compat);
 	CPPUNIT_TEST_SUITE_END();
 };
 
@@ -447,6 +452,12 @@ void test::test_erase_range_none()
 	CPPUNIT_ASSERT(a[2] != static_cast<char *>(0));
 	CPPUNIT_ASSERT_EQUAL(std::string("baz"), std::string(a[2]));
 	CPPUNIT_ASSERT_EQUAL(static_cast<char *>(0), a[3]);
+}
+
+void test::test_algorithm_compat()
+{
+	auto a = argvcc::Argv{"foo", "bar", "baz"};
+	CPPUNIT_ASSERT(any_of(std::begin(a), std::end(a), [](std::string v) { return v == "bar"; }));
 }
 
 }}
