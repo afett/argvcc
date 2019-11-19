@@ -38,9 +38,6 @@ void argv_init(Src const& src, Dst & dst, FN fn)
 class wrap_argv {
 public:
 	wrap_argv(int argc, char *argv[])
-	:
-		begin_(nullptr),
-		end_(nullptr)
 	{
 		if (argc == 0 || argv == nullptr) {
 			throw std::bad_alloc();
@@ -64,8 +61,8 @@ public:
 	}
 
 private:
-	char **begin_;
-	char **end_;
+	char **begin_ = nullptr;
+	char **end_ = nullptr;
 };
 
 }
