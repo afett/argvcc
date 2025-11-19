@@ -1,7 +1,7 @@
 ARGVCC_DEBUG ?=
 
 CXX ?= g++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++11
+CXXFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -L.
 CPPFLAGS = -Iinclude -Isrc
 
