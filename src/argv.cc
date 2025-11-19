@@ -134,9 +134,11 @@ Argv::Argv(int argc, char *argv[])
 	});
 }
 
+using StrPtr = std::unique_ptr<char, std::integral_constant<decltype(&::free), &::free>>;
+
 void Argv::push_back(std::string const& s)
 {
-	auto tmp = std::unique_ptr<char>(::safe_strdup(s.c_str()));
+	auto tmp = StrPtr(::safe_strdup(s.c_str()));
 	argv_.resize(argv_.size() + 1);
 	*prev(argv_.end(), 2) = tmp.release();
 }
@@ -146,7 +148,7 @@ void Argv::push_back(const char *s)
 	if (s == nullptr) {
 		throw std::bad_alloc(); // LCOV_EXCL_LINE
 	}
-	auto tmp = std::unique_ptr<char>(::safe_strdup(s));
+	auto tmp = StrPtr(::safe_strdup(s));
 	argv_.resize(argv_.size() + 1);
 	*prev(argv_.end(), 2) = tmp.release();
 }
